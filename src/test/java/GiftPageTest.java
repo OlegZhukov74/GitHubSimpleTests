@@ -1,9 +1,7 @@
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.testng.Assert.*;
-
-
-
 
 public class GiftPageTest extends Page {
     private GiftPage giftPage;
@@ -57,9 +55,35 @@ public class GiftPageTest extends Page {
     }
 
     @Test
+    public void enterInvalidRecipientEmail() {
+        giftPage.getRecipientInfoModal();
+        giftPage.fillRecipientInfo("name", "qwe", "some message");
+        giftPage.clickGiftPersonNextBtn();
+        String emailFiledErrorMsg = giftPage.getEmailFieldErrorMsg();
+        assertEquals(emailFiledErrorMsg, "Valid email address required");
+    }
 
+    /**
+     * TODO: Need login first.
+     * After clicking on cartCounter should appear block whith its contents
+     */
+    @Test @Ignore
+    public void checkCartCounterContentAppear() {
+        giftPage.clickCartCounter();
+        assertTrue(giftPage.iscartCounterContentAppeared());
+    }
 
+    @Test
+    public void enterInvalidSubscriberEmail() {
+        giftPage.enterSubscriberEmail("invalidEmail");
+        giftPage.submitSubscriberEmail();
+        assertEquals(giftPage.getSubscriberEmailInputErrorText(),"Valid email address required");
+    }
 
-
-
+    @Test
+    public void enterValidSubscriberEmail() {
+        giftPage.enterSubscriberEmail("umacte@gmail.com");
+        giftPage.submitSubscriberEmail();
+        assertEquals(giftPage.getSubscriberEmailAfterText(),"Thanks for subscribing to our newsletter!");
+    }
 }

@@ -12,6 +12,12 @@ public class GiftPage {
         this.driver = driver;
     }
 
+    /**
+     * cartCounter - тележка
+     * */
+    private By cartCounter = By.id("cartCounter");
+    private By cartCounterContent = By.xpath("//div[contains(text(), 'Your cart')]");
+
     private By buyForHim = By.id("buyForHim");
     private By buyForHer = By.id("buyForHer");
     private By offers = By.xpath("//*[@data-testid='offers']");
@@ -30,6 +36,11 @@ public class GiftPage {
     private By messageFieldErrorMsg = By.xpath("//*[@id='giftModalPersonalMessage']/parent::div//following-sibling::div");
     private By giftPersonNextBtn = By.id("giftPersonNextButton");
     private By giftPersonBackBtn = By.xpath("//*[@data-testid='modalGoBackButton']");
+
+    private By subscriberEmailInput = By.xpath("//footer//div/input[@placeholder='Enter email address']");
+    private By subscriberEmailSubmitBtn = By.xpath("//footer//div[@role=\"InputComponent\"]/following-sibling::button[contains(text(), '')]");
+    private By subscriberEmailError = By.xpath("//footer//form//div[@role=\"InputComponent\"]/div[normalize-space(text())]");
+    private By subscriberEmailAfterMsg = By.xpath("//footer//span[contains(text(), 'keep in touch')]/following-sibling::form/span");
 
     public void clickBuyForHim() {
         driver.findElement(buyForHim).click();
@@ -78,7 +89,6 @@ public class GiftPage {
         driver.findElement(modalCloseIcon).click();
     }
 
-
     public void getRecipientInfoModal() {
         driver.findElement(buyForHim).click();
         assertTrue(isOffersModalAppered());
@@ -111,7 +121,40 @@ public class GiftPage {
     }
 
     public String getMessageFieldErrorMsg() {
-        return driver.findElement(nameFieldErrorMsg).getText();
+        return driver.findElement(messageFieldErrorMsg).getText();
+    }
+
+    public void clickCartCounter() {
+        driver.findElement(cartCounter).click();
+    }
+
+    public boolean iscartCounterContentAppeared() {
+        try {
+            driver.findElement(cartCounterContent);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public void enterSubscriberEmail(String email) {
+        driver.findElement(subscriberEmailInput).sendKeys(email);
+    }
+
+    public void submitSubscriberEmail() {
+        driver.findElement(subscriberEmailSubmitBtn).click();
+    }
+
+
+    public String getSubscriberEmailInputErrorText() {
+        return driver.findElement(subscriberEmailError).getText();
+    }
+
+    /**
+     * We see this message after successful subscribing on newsletters in the bottom of the page.
+     * */
+    public String getSubscriberEmailAfterText() {
+        return driver.findElement(subscriberEmailAfterMsg).getText();
     }
 }
 
